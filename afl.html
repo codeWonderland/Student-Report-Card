@@ -1,0 +1,141 @@
+<h2>Is your state making the grade?</h2>
+<p><em>Click on a state to view its grades and data points.</em></p>
+<div id="svg-container" style="position: relative; overflow: visible;">
+    <div id="mapContainer" style="position: relative; width: 100%; float: left;"></div>
+    <div id="dc-container" style="position: relative; width: 10%; float: left; margin-top: 200px;"></div>
+</div>
+
+<!--<button id="dc-icon">DC</button>-->
+<script type="text/javascript">// <![CDATA[
+var appState = {
+    selected: 'Vermont'
+};
+
+var map = new Datamap({
+    element: document.getElementById('mapContainer'),
+    fills: {
+        A: '#2D7150',
+        B: '#89AC92',
+        C: '#EED898',
+        D: '#D89889',
+        F: '#A03123',
+        defaultFill: '#efefef'
+    },
+    geographyConfig: {
+        popupTemplate: function(geo, data) {
+            return ['<div class="hoverinfo"><strong>',
+                geo.properties.name,
+                '</strong><br/>Final Grade: ' + data.fillKey,
+                '<br /><em>Click for more information</em>',
+                '</div>'].join('');
+        },
+        highlightOnHover: true,
+        highlightBorderWidth: 5,
+        highlightBorderColor: '#cef1ff',
+        borderWidth: 2,
+        highlightFillColor: 'default'
+    },
+    data: parseData(),
+    scope: 'usa',
+    height: 450,
+    done: function(datamap) {
+        datamap.svg.selectAll('.datamaps-subunit').on('click', function(geography) {
+            $detailsModal = $('[data-remodal-id=detailsModal]');
+            appState.selected = geography.properties.name;
+            $detailsModal.find('h1').html('Details - ' + appState.selected);
+            var stateModal = $detailsModal.remodal();
+
+            $detailsModal.processStateData(geography.id);
+
+            stateModal.open();
+        });
+    }
+});
+
+document.getElementById('mapContainer').style.width = '85%';
+
+document.getElementById("dc-container").innerHTML =
+    '<svg id="dc-icon" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1080 1080">\n' +
+    '            <style type="text/css">\n' +
+    '                .st0\n' +
+    '                {\n' +
+    '                    fill:#5BCFAE;\n' +
+    '                    stroke:#000000;\n' +
+    '                    stroke-width:10;\n' +
+    '                    stroke-miterlimit:10;\n' +
+    '                }\n' +
+    '            </style>\n' +
+    '            <path class="st0" d="M926.2 534.9c-38-37.9-76-75.7-113.9-113.6 -124-123.6-248-247.1-372-370.6 -1.2-1.2-2.2-2.4-3.4-3.7h-1c-8.6 9-17.2 18.1-25.9 27 -66 67.3-132 134.6-198 201.8 -22.5 22.9-45 45.9-67.5 68.8 -1.2 1.2-2.4 2.3-3.6 3.4v1c16 14 29.7 29.7 39.8 48.8 14.1 26.8 29.1 53.1 49.2 76.1 10.2 11.7 22.9 19.5 37.2 25 16.4 6.3 33.4 9.7 50.9 11.1 6.7 0.6 13.5 1.5 20.1 2.2 1.3 7.4 1.9 15 4 22.2 9.6 32.3 24.5 61.3 52.3 82.2 11.3 8.5 22.4 17.5 32.2 27.6 18.2 18.8 29.5 41.8 37.4 66.5 5.2 16 10.2 32 15.3 48.1 2.8 8.7 3.6 17.5 0.5 26.2 -2.7 7.9-9.1 13.9-17.2 16 -4.7 1.3-9.8 1.5-14.6 2.1 -6.4 0.9-12.7 1.7-19 2.8 -1.5 0.3-2.9 1-4 2 -1.5 1.7-2.8 3.5-4 5.3 1.6 1.1 3.2 2 4.9 2.8 11.8 4.3 22.4 10.1 28.5 21.9 3.8 7.4 3.3 15.1 0.9 22.6 -4.1 13.3-3.9 26.7-2.5 40.3 1 9.2 1.6 18.4 2.1 27.7 0.5 7.6 0.7 15.2 1 22.8 0.6 13.8-3.2 26.7-7 39.8 -0.8 3.2-1.1 6.5-1 9.8 -0.1 10.9 0 21.8 0 32.8l2 0.8 12.5-11.4 16.4-16 33.7-33 15.3-15 33.6-33 15.4-15 58.7-58 31.3-31c17.6-17.6 35.2-35.2 52.8-52.8 9.2-9.1 18.5-18.1 27.8-27.2l31.4-31c17.6-17.6 35.2-35.2 52.8-52.8 9.5-9.5 19.2-18.8 28.8-28.2l30.3-30L941 550v-1C936.1 544.3 931.1 539.7 926.2 534.9zM538 646c-91.1 0-165-73.9-165-165s73.9-165 165-165 165 73.9 165 165S629.1 646 538 646L538 646z"/>\n' +
+    '            <path class="dc" d="M498.9 438.4c-4.7-3.5-10.1-6.1-15.8-7.6 -6.2-1.7-12.6-2.6-19-2.5h-18.7v85.5h16.5c6.9 0 13.7-0.7 20.5-2.2 5.9-1.3 11.5-3.9 16.4-7.5 4.7-3.6 8.4-8.3 10.9-13.6 2.7-5.6 4-12.5 4-20.6 0.1-6.4-1.2-12.7-4-18.4C507.1 446.3 503.4 441.8 498.9 438.4z"/>\n' +
+    '            <path class="dc" d="M926.2 534.9c-38-37.9-76-75.7-113.9-113.6 -124-123.6-248-247.1-372-370.6 -1.2-1.2-2.2-2.4-3.4-3.7h-1c-8.6 9-17.2 18.1-25.9 27 -66 67.3-132 134.6-198 201.8 -22.5 22.9-45 45.9-67.5 68.8 -1.2 1.2-2.4 2.3-3.6 3.4v1c16 14 29.7 29.7 39.8 48.8 14.1 26.8 29.1 53.1 49.2 76.1 10.2 11.7 22.9 19.5 37.2 25 16.4 6.3 33.4 9.7 50.9 11.1 6.7 0.6 13.5 1.5 20.1 2.2 1.3 7.4 1.9 15 4 22.2 9.6 32.3 24.5 61.3 52.3 82.2 11.3 8.5 22.4 17.5 32.2 27.6 18.2 18.8 29.5 41.8 37.4 66.5 5.2 16 10.2 32 15.3 48.1 2.8 8.7 3.6 17.5 0.5 26.2 -2.7 7.9-9.1 13.9-17.2 16 -4.7 1.3-9.8 1.5-14.6 2.1 -6.4 0.9-12.7 1.7-19 2.8 -1.5 0.3-2.9 1-4 2 -1.5 1.7-2.8 3.5-4 5.3 1.6 1.1 3.2 2 4.9 2.8 11.8 4.3 22.4 10.1 28.5 21.9 3.8 7.4 3.3 15.1 0.9 22.6 -4.1 13.3-3.9 26.7-2.5 40.3 1 9.2 1.6 18.4 2.1 27.7 0.5 7.6 0.7 15.2 1 22.8 0.6 13.8-3.2 26.7-7 39.8 -0.8 3.2-1.1 6.5-1 9.8 -0.1 10.9 0 21.8 0 32.8l2 0.8 12.5-11.4 16.4-16 33.7-33 15.3-15 33.6-33 15.4-15 58.7-58 31.3-31c17.6-17.6 35.2-35.2 52.8-52.8 9.2-9.1 18.5-18.1 27.8-27.2l31.4-31c17.6-17.6 35.2-35.2 52.8-52.8 9.5-9.5 19.2-18.8 28.8-28.2l30.3-30L941 550v-1C936.1 544.3 931.1 539.7 926.2 534.9zM539.9 502.2c-4.2 8.7-10.3 16.3-17.8 22.4 -7.7 6.2-16.4 10.8-25.8 13.7 -9.9 3.1-20.3 4.7-30.7 4.7h-51.9V399h47.6c11.1-0.1 22.1 1.2 32.9 3.9 9.8 2.3 19 6.6 27.2 12.5 7.8 5.9 14.2 13.6 18.4 22.5 4.5 9.2 6.8 20.4 6.8 33.6C546.5 483.1 544.3 493.3 539.9 502.2zM667 540.6c-9.1 4-18.9 6.1-28.9 6.1 -10.6 0.1-21.2-1.7-31.1-5.3 -9.2-3.3-17.5-8.5-24.6-15.2 -7-6.7-12.5-14.9-16.2-23.9 -7.7-20.2-7.7-42.5 0-62.7 3.6-9 9.2-17.2 16.2-23.9 7.1-6.7 15.5-11.8 24.6-15.2 10-3.6 20.5-5.4 31.1-5.3 4.3 0 8.5 0.4 12.7 1.1 4.4 0.8 8.8 2 13 3.6 4.3 1.7 8.5 3.9 12.3 6.5 4 2.8 7.6 6.2 10.6 10l-24.4 19.9c-3.1-3.8-7-6.8-11.5-8.8 -5-2.1-10.4-3.2-15.8-3.1 -11.4-0.1-22.2 4.7-29.8 13.1 -3.8 4.3-6.8 9.3-8.8 14.8 -4.2 12-4.2 25.1 0 37.1 2 5.4 4.9 10.3 8.7 14.6 3.6 4.1 8 7.4 12.9 9.7 5 2.3 10.5 3.5 16 3.5 6 0.1 12-1.3 17.3-4.1 5-2.7 9.3-6.6 12.4-11.4l26.5 19.7C684.3 530 676.3 536.5 667 540.6z"/>\n' +
+    '        </svg>';
+
+var dcFills = {
+        A: '#2D7150',
+        B: '#89AC92',
+        C: '#EED898',
+        D: '#D89889',
+        F: '#A03123',
+        defaultFill: '#efefef'
+};
+
+document.getElementsByClassName('dc')[0].style.fill = dcFills[overallGrades[8]['Grade']];
+document.getElementsByClassName('dc')[1].style.fill = dcFills[overallGrades[8]['Grade']];
+
+$('#dc-icon').on('click', function() {
+    $detailsModal = $('[data-remodal-id=detailsModal]');
+    appState.selected = 'DC';
+    $detailsModal.find('h1').html('Details - ' + appState.selected);
+    var stateModal = $detailsModal.remodal();
+
+    $detailsModal.processStateData(appState.selected);
+
+    stateModal.open();
+});
+
+function parseData() {
+    var result = {};
+    var currentState;
+
+    for (var i = 0; i < overallGrades.length; i++) {
+        currentState = overallGrades[i];
+        result[currentState['State Code']] = {
+            fillKey: currentState['Grade']
+        }
+    }
+
+    return result;
+}
+
+(function($) {
+    $.fn.processStateData = function(stateId) {
+        var stateIndex, i;
+        var modal = this;
+        
+        for (i = 0; i < overallGrades.length; i++) {
+            if (overallGrades[i]['State Code'] === stateId) {
+                stateIndex = i;
+                break;
+            }
+        }
+
+        $(modal).find(".content")[0].innerHTML = '' +
+            '<div class="data-point">' +
+            '    <h2>Final Grade</h2>' +
+            '    <div class="grade big ' + overallGrades[stateIndex]["Grade"].charAt().toLowerCase() + '">' + overallGrades[stateIndex]["Grade"].charAt() + '</div>' +
+            '</div>';
+        
+        $.each(overallGrades[stateIndex], function (category, data) {
+            if (category !== 'Grade' && category !== 'State Code') {
+                $(modal).find(".content")[0].innerHTML += '' +
+                    '<div class="data-point">' +
+                    '    <h2>' + category + '</h2>' +
+                         data +
+                    '</div>';
+            }
+        });
+
+        return this;
+    };
+})(jQuery);
+// ]]></script>
