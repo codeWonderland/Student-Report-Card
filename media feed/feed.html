@@ -1,3 +1,4 @@
+<p>For media inquiries, contact John Pelletier, <a href="mailto:cfl@champlain.edu">cfl@champlain.edu</a>.</p>
 <style><!--
 #mentions .row {
     margin-bottom: 2em;
@@ -79,7 +80,7 @@
     });
 
     function formatMentionHTML(spreadsheetEntry) {
-        var result = '<div class="champ-card mention"><div class="mention-date">' + spreadsheetEntry.gsx$date.$t + '</div>';
+        var result = '<div class="card-component card-component-round-corners card-component-shadow mention"><div class="mention-date">' + spreadsheetEntry.gsx$date.$t + '</div>';
 
         if (spreadsheetEntry.gsx$image && spreadsheetEntry.gsx$image.$t !== "") {
             result += '<a target="_blank" href="' + spreadsheetEntry.gsx$url.$t + '"><img class="mention-featured-image" src="' + spreadsheetEntry.gsx$image.$t + '" /></a>';

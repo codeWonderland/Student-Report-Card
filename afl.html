@@ -7,6 +7,11 @@
 
 <!--<button id="dc-icon">DC</button>-->
 <script type="text/javascript">// <![CDATA[
+(function(i,s,o,g,r,a,m){i['GoogleAnalyticsObject']=r;i[r]=i[r]||function(){
+    (i[r].q=i[r].q||[]).push(arguments)},i[r].l=1*new Date();a=s.createElement(o),
+    m=s.getElementsByTagName(o)[0];a.async=1;a.src=g;m.parentNode.insertBefore(a,m)
+})(window,document,'script','https://www.google-analytics.com/analytics.js','ga');
+ga('create', 'UA-36888965-1', 'auto');
 var appState = {
     selected: 'Vermont'
 };
@@ -14,11 +19,11 @@ var appState = {
 var map = new Datamap({
     element: document.getElementById('mapContainer'),
     fills: {
-        A: '#2D7150',
-        B: '#89AC92',
-        C: '#EED898',
-        D: '#D89889',
-        F: '#A03123',
+        A: '#2e654d',
+        B: '#6b9486',
+        C: '#dbb74e',
+        D: '#c07681',
+        F: '#943a2b',
         defaultFill: '#efefef'
     },
     geographyConfig: {
@@ -71,12 +76,12 @@ document.getElementById("dc-container").innerHTML =
     '        </svg>';
 
 var dcFills = {
-        A: '#2D7150',
-        B: '#89AC92',
-        C: '#EED898',
-        D: '#D89889',
-        F: '#A03123',
-        defaultFill: '#efefef'
+    A: '#2e654d',
+    B: '#6b9486',
+    C: '#dbb74e',
+    D: '#c07681',
+    F: '#943a2b',
+    defaultFill: '#efefef'
 };
 
 document.getElementsByClassName('dc')[0].style.fill = dcFills[overallGrades[8]['Grade']];
@@ -111,6 +116,12 @@ function parseData() {
     $.fn.processStateData = function(stateId) {
         var stateIndex, i;
         var modal = this;
+        ga('send', {
+            hitType: 'event',
+            eventCategory: 'Financial Literacy Map',
+            eventAction: 'State Details Click',
+            eventLabel: stateId
+        });
         
         for (i = 0; i < overallGrades.length; i++) {
             if (overallGrades[i]['State Code'] === stateId) {
