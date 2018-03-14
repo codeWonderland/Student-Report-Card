@@ -1,0 +1,10 @@
+{
+  "version": 3,
+  "file": "why-give.js",
+  "sourceRoot": "",
+  "sources": [
+    "why-give.coffee"
+  ],
+  "names": [],
+  "mappings": ";AAAA;AAAA,MAAA;;EAAA,aAAA,GAAgB;;EAEhB,IAAA,CAAK,gDAAA,GAAiD,aAAjD,GAA+D,iEAApE;AAFA"
+}
